@@ -5,7 +5,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: 'https://crhdri-ai-demo-web-applicaion.vercel.app', // Sirf apne frontend ko allow karein
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 app.use(express.json());
 
 const PORT = process.env.PORT;
