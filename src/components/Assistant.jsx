@@ -15,30 +15,68 @@ const Assistant = () => {
   // 🔹 Function: simple rule-based AI replies (NO backend / NO API)
   const getReply = (message) => {
     const msg = message.toLowerCase();
+  // 👋 Greetings
+  if (msg.includes("hello") || msg.includes("hi")) {
+    return "Hello 👋 Welcome to Crhdri AI Assistant. How can I help you today?";
+  }
 
-    // 💬 Greeting response
-    if (msg.includes("hello") || msg.includes("hi")) {
-      return "Hello 😊 How can I help you?";
-    }
+  // 🧠 Name / identity
+  if (msg.includes("name") || msg.includes("who are you")) {
+    return "I am Crhdri AI Assistant 🤖, here to help you with services, pricing, and support.";
+  }
 
-    // 🧠 Identity question
-    if (msg.includes("name")) {
-      return "I am Crhdri AI Assistant 🤖";
-    }
+  // 🏢 About company
+  if (msg.includes("about") || msg.includes("what is this")) {
+    return "We are Crhdri AI Software Technologies Pvt Ltd 💻, building modern web & AI solutions for businesses.";
+  }
 
-    // 💰 Pricing related query
-    if (msg.includes("price") || msg.includes("cost")) {
-      return "Prices depend on product 💰 Please check the product section.";
-    }
+  // ⚙️ Services
+  if (msg.includes("service") || msg.includes("what do you offer")) {
+    return `We provide these services 🚀:
+• Website Development 🌐
+• Web Apps (React / Node.js) ⚛️
+• E-commerce Solutions 🛒
+• AI Chatbots 🤖
+• UI/UX Design 🎨
+• API Development 🔗`;
+  }
 
-    // 🙋 Help request
-    if (msg.includes("help")) {
-      return "Sure 👍 I am here to help you!";
-    }
+  // 💰 Pricing
+  if (msg.includes("price") || msg.includes("cost") || msg.includes("charges")) {
+    return "Pricing depends on project 💰. Small websites start from ₹5,000+. Contact us for exact quote.";
+  }
 
-    // ❓ Default fallback response
-    return "Sorry 😅 I don't understand that yet.";
-  };
+  // 📞 Contact
+  if (msg.includes("contact") || msg.includes("email") || msg.includes("phone")) {
+    return `📞 Contact Details:
+Email: support@crhdri.ai
+Phone: +91-XXXXXXXXXX
+We usually reply within 24 hours ⚡`;
+  }
+
+  // 🌐 Website / Demo
+  if (msg.includes("website") || msg.includes("demo") || msg.includes("link")) {
+    return "You can explore our demo projects and portfolio on our official website 🌐 (ask admin for live link).";
+  }
+
+  // 💼 Internship / Job
+  if (msg.includes("internship") || msg.includes("job")) {
+    return "Yes 👍 We provide internship opportunities in Web Development, React, Node.js & AI.";
+  }
+
+  // 🛠️ Tech stack
+  if (msg.includes("technology") || msg.includes("tech stack")) {
+    return "We use modern tech stack ⚙️: React, Node.js, Express, MongoDB, Firebase, Tailwind CSS.";
+  }
+
+  // 🙋 Help
+  if (msg.includes("help")) {
+    return "Sure 👍 You can ask about services, pricing, contact, internship, or projects.";
+  }
+
+  // ❓ Default fallback
+  return "Sorry 😅 I didn't understand that. Try asking about services, pricing, or contact details.";
+  }
 
   // 🔹 Send message handler
   const sendMessage = () => {
