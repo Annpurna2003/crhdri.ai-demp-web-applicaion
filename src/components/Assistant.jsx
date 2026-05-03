@@ -1,52 +1,71 @@
 import { useState } from "react";
 
 const Assistant = () => {
-  // 🔹 chatbot open/close state
+  // 🔹 Chat open/close state (controls floating chat UI)
   const [isOpen, setIsOpen] = useState(true);
 
-  // 🔹 messages state
+  // 🔹 Chat messages store (user + assistant messages)
   const [messages, setMessages] = useState([
     { role: "assistant", content: "Hi 👋 I am Crhdri AI Assistant" }
   ]);
 
-  // 🔹 input state
+  // 🔹 Input box state (user typing message)
   const [input, setInput] = useState("");
 
-  // 🔹 send message function
-  const sendMessage = async () => {
-    if (!input.trim()) return;
+  // 🔹 Function: simple rule-based AI replies (NO backend / NO API)
+  const getReply = (message) => {
+    const msg = message.toLowerCase();
 
-    const userMsg = { role: "user", content: input };
-    setMessages(prev => [...prev, userMsg]);
-try {
-  // Localhost ki jagah Render ka URL use karein
-  const res = await fetch("https://crhdri-ai-demp-web-applicaion.onrender.com/chat", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ message: input })
-  });
-      const data = await res.json();
-
-      setMessages(prev => [
-        ...prev,
-        { role: "assistant", content: data.reply }
-      ]);
-
-    } catch {
-      setMessages(prev => [
-        ...prev,
-        { role: "assistant", content: "Server error 😅" }
-      ]);
+    // 💬 Greeting response
+    if (msg.includes("hello") || msg.includes("hi")) {
+      return "Hello 😊 How can I help you?";
     }
 
+    // 🧠 Identity question
+    if (msg.includes("name")) {
+      return "I am Crhdri AI Assistant 🤖";
+    }
+
+    // 💰 Pricing related query
+    if (msg.includes("price") || msg.includes("cost")) {
+      return "Prices depend on product 💰 Please check the product section.";
+    }
+
+    // 🙋 Help request
+    if (msg.includes("help")) {
+      return "Sure 👍 I am here to help you!";
+    }
+
+    // ❓ Default fallback response
+    return "Sorry 😅 I don't understand that yet.";
+  };
+
+  // 🔹 Send message handler
+  const sendMessage = () => {
+    if (!input.trim()) return; // empty message ignore
+
+    // 👤 Add user message to chat
+    const userMsg = { role: "user", content: input };
+    setMessages((prev) => [...prev, userMsg]);
+
+    // 🤖 Generate assistant reply using local logic
+    const reply = getReply(input);
+
+    // ⏳ simulate typing delay (feels like real AI)
+    setTimeout(() => {
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: reply }
+      ]);
+    }, 500);
+
+    // 🧹 clear input box after sending
     setInput("");
   };
 
   return (
     <>
-      {/* 🔹 Floating button when chat is closed */}
+      {/* 🔹 Floating chat button (visible when chat is closed) */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
@@ -56,24 +75,24 @@ try {
         </button>
       )}
 
-      {/* 🔹 Chatbox */}
+      {/* 🔹 Chat window */}
       {isOpen && (
         <div className="fixed bottom-5 right-5 w-80 bg-white rounded-2xl shadow-2xl overflow-hidden">
 
-          {/* 🔹 Header with cross button */}
+          {/* 🔹 Header */}
           <div className="bg-blue-600 text-white p-3 flex justify-between items-center">
             <span className="font-semibold">AI Assistant</span>
 
-            {/* ❌ Close button */}
+            {/* ❌ Close chat button */}
             <button
               onClick={() => setIsOpen(false)}
-              className="text-white text-lg font-bold hover:text-gray-200"
+              className="text-white text-lg font-bold"
             >
               ×
             </button>
           </div>
 
-          {/* 🔹 Messages */}
+          {/* 🔹 Chat messages area */}
           <div className="h-64 p-3 overflow-y-auto space-y-2 bg-gray-50">
             {messages.map((msg, i) => (
               <div
@@ -89,7 +108,7 @@ try {
             ))}
           </div>
 
-          {/* 🔹 Input */}
+          {/* 🔹 Input section */}
           <div className="flex p-2 border-t">
             <input
               className="flex-1 border p-2 rounded-lg text-sm outline-none"
@@ -99,6 +118,7 @@ try {
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             />
 
+            {/* Send button */}
             <button
               onClick={sendMessage}
               className="ml-2 bg-blue-600 text-white px-4 rounded-lg"
