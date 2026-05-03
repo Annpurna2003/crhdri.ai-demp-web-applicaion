@@ -18,16 +18,15 @@ const Assistant = () => {
 
     const userMsg = { role: "user", content: input };
     setMessages(prev => [...prev, userMsg]);
-
-    try {
-      const res = await fetch("http://localhost:5000/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ message: input })
-      });
-
+try {
+  // Localhost ki jagah Render ka URL use karein
+  const res = await fetch("https://crhdri-ai-demp-web-applicaion.onrender.com/chat", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ message: input })
+  });
       const data = await res.json();
 
       setMessages(prev => [
